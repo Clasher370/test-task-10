@@ -17,21 +17,23 @@ ActiveRecord::Schema.define(version: 20171009081150) do
 
   create_table "comments", force: :cascade do |t|
     t.string "body"
-    t.bigint "posts_id"
+    t.integer "author_id"
+    t.bigint "post_id"
     t.datetime "published_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["posts_id"], name: "index_comments_on_posts_id"
+    t.index ["author_id"], name: "index_comments_on_author_id"
+    t.index ["post_id"], name: "index_comments_on_post_id"
   end
 
   create_table "posts", force: :cascade do |t|
     t.string "title"
     t.string "body"
-    t.integer "author"
+    t.integer "author_id"
     t.datetime "published_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["author"], name: "index_posts_on_author"
+    t.index ["author_id"], name: "index_posts_on_author_id"
   end
 
   create_table "users", force: :cascade do |t|
