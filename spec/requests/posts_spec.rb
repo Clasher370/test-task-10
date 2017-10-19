@@ -24,8 +24,8 @@ describe 'Posts' do
         expect(response).to have_http_status(:created)
       end
 
-      it 'return success message' do
-        expect(response.body).to match /Created successfully!/
+      %w[id title body published_at author_nickname].each do |attr|
+        it { expect(JSON.parse(response.body)[attr]).not_to be_nil }
       end
     end
 
