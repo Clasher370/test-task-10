@@ -3,6 +3,7 @@ require 'rails_helper'
 describe 'Posts' do
   let(:user) { create(:user) }
   let(:valid_attr) { attributes_for(:post, author_id: user.id) }
+  let(:post_attributes) { }
 
   context 'factory is valid' do
     it 'build' do
@@ -39,6 +40,21 @@ describe 'Posts' do
       it 'is have errors messages' do
         expect(response.body).to match /can't be blank/
       end
+    end
+  end
+
+  describe 'GET #show' do
+    let(:post) { create(:post) }
+
+    it 'is return post by id' do
+      get "/api/v1/posts/#{post.id}"
+      expect(JSON.parse(response.body)['id']).to eq post.id
+    end
+
+    it 'is return error if wrong id' do
+      wrong_id = post.id - 1
+      get "/api/v1/posts/#{wrong_id}"
+      expect(JSON.parse(response.body)).to eq "error" => "Couldn't find Post with 'id'=#{wrong_id}"
     end
   end
 end

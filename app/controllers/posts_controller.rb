@@ -8,6 +8,13 @@ class PostsController < ApplicationController
     end
   end
 
+  def show
+    post = Post.find(params[:id])
+    render json: post, status: :ok
+  rescue => e
+    render json: { error: e.message }, status: :not_found
+  end
+
   private
 
   def post_params

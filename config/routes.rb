@@ -3,5 +3,6 @@ Rails.application.routes.draw do
     post '/create', to: 'users#create'
 
     post '/posts', to: 'posts#create'
+    get '/posts/:id', to: 'posts#show'
   end
 end
