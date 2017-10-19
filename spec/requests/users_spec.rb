@@ -3,6 +3,18 @@ require 'rails_helper'
 describe 'Users' do
   let(:valid_attr) { attributes_for(:user) }
 
+  context 'factory is valid' do
+    it 'build' do
+      user = build(:user)
+      expect(user).to be_valid
+    end
+
+    it 'create' do
+      user = create(:user)
+      expect(user.errors.messages).to be_empty
+    end
+  end
+
   describe 'POST #create' do
     context 'with valid attributes' do
       before { post '/api/v1/create', params: valid_attr }
