@@ -62,7 +62,7 @@ describe 'Posts' do
   end
 
   describe 'GET #index' do
-    let!(:user) { create(:user_with_five_posts) }
+    let!(:user) { create(:user_with_twenty_posts) }
     let!(:post) { create(:post, author: user, published_at: Time.now + 1.hour) }
 
     context 'with correct params' do
@@ -78,13 +78,18 @@ describe 'Posts' do
         expect(JSON.parse(response.body)[0]['id']).to eq post.id
       end
 
+      it 'is last page have 1 post' do
+        get '/api/v1/posts', params: { page: 11, per_page: 2 }
+        expect(JSON.parse(response.body).count).to eq 1
+      end
+
       context 'response have headers' do
         it 'pages-count' do
-          expect(response['pages-count']).to eq '3'
+          expect(response['pages-count']).to eq '11'
         end
 
         it 'posts-count' do
-          expect(response['posts-count']).to eq '6'
+          expect(response['posts-count']).to eq '21'
         end
       end
     end
@@ -92,7 +97,7 @@ describe 'Posts' do
     context 'without params' do
       before { get '/api/v1/posts' }
 
-      it { expect(JSON.parse(response.body).count).to eq 6 }
+      it { expect(JSON.parse(response.body).count).to eq 21 }
 
       it 'pages-count return none' do
         expect(response['pages-count']).to eq 'none'
@@ -100,9 +105,18 @@ describe 'Posts' do
     end
 
     context 'with only' do
-      it 'page' do
-        get '/api/v1/posts', params: { page: 1 }
-        expect(JSON.parse(response.body).count ).to eq 6
+      context 'invalid page param' do
+        before { get '/api/v1/posts', params: { page: 2 }}
+
+        it { expect(JSON.parse(response.body)).to be_empty }
+        it { expect(response['pages-count']).to eq 'none' }
+      end
+
+      context 'per_page param' do
+        before { get '/api/v1/posts', params: { per_page: 5 }}
+
+        it { expect(JSON.parse(response.body).count).to eq 5 }
+        it { expect(response['pages-count']).to eq '5' }
       end
     end
   end

@@ -26,7 +26,8 @@ class PostsController < ApplicationController
 
   def set_headers
     post_size = Post.all.count
-    pages_count = params[:per_page] ? (post_size / params[:per_page].to_i).to_s : 'none'
+    per_page = params[:per_page].to_i
+    pages_count = params[:per_page] ? ((post_size / per_page) + (post_size % per_page)).to_s : 'none'
 
     response.set_header('pages-count', pages_count)
     response.set_header('posts-count', post_size.to_s)
