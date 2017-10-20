@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 describe 'Posts' do
-  let(:user) { create(:user) }
-  let(:valid_attr) { attributes_for(:post, author_id: user.id) }
+  let(:valid_attr) do
+    user = create(:user)
+    attributes_for(:post, author_id: user.id)
+  end
 
   context 'factory is valid' do
     it 'build' do
@@ -60,6 +62,29 @@ describe 'Posts' do
   end
 
   describe 'GET #index' do
+    let!(:user) { create(:user_with_five_posts) }
+    let!(:post) { create(:post, author: user, published_at: Time.now + 1.hour) }
 
+    before { get '/posts', params: { page: 1, per_page: 2 } }
+
+    it { expect(response).to have_http_status 200 }
+
+    it 'return list of posts' do
+      expect(response.body.length).to eq 6
+    end
+
+    it 'is ordered by published_at DESC' do
+      expect(JSON.parse(response.body)[0]['id']).to eq post.id.to_s
+    end
+
+    context 'response have headers' do
+      it 'pages-count' do
+        expect(response['pages-count']).to eq 3
+      end
+
+      it 'posts-count' do
+        expect(response['posts-count']).to eq 6
+      end
+    end
   end
 end
