@@ -99,8 +99,11 @@ describe 'Posts' do
       end
     end
 
-    context 'with invalid params' do
-
+    context 'with only' do
+      it 'page' do
+        get '/api/v1/posts', params: { page: 1 }
+        expect(JSON.parse(response.body).count ).to eq 6
+      end
     end
   end
 end
