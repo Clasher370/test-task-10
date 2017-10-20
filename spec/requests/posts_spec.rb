@@ -3,7 +3,6 @@ require 'rails_helper'
 describe 'Posts' do
   let(:user) { create(:user) }
   let(:valid_attr) { attributes_for(:post, author_id: user.id) }
-  let(:post_attributes) { }
 
   context 'factory is valid' do
     it 'build' do
@@ -26,7 +25,9 @@ describe 'Posts' do
       end
 
       %w[id title body published_at author_nickname].each do |attr|
-        it { expect(JSON.parse(response.body)[attr]).not_to be_nil }
+        it "is have #{attr} attribute" do
+          expect(JSON.parse(response.body)[attr]).not_to be_nil
+        end
       end
     end
 
@@ -56,5 +57,9 @@ describe 'Posts' do
       get "/api/v1/posts/#{wrong_id}"
       expect(JSON.parse(response.body)).to eq "error" => "Couldn't find Post with 'id'=#{wrong_id}"
     end
+  end
+
+  describe 'GET #index' do
+
   end
 end
