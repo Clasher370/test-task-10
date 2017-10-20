@@ -65,16 +65,16 @@ describe 'Posts' do
     let!(:user) { create(:user_with_five_posts) }
     let!(:post) { create(:post, author: user, published_at: Time.now + 1.hour) }
 
-    before { get '/posts', params: { page: 1, per_page: 2 } }
+    before { get '/api/v1/posts', params: { page: 1, per_page: 2 } }
 
     it { expect(response).to have_http_status 200 }
 
     it 'return list of posts' do
-      expect(response.body.length).to eq 6
+      expect(JSON.parse(response.body).length).to eq 6
     end
 
     it 'is ordered by published_at DESC' do
-      expect(JSON.parse(response.body)[0]['id']).to eq post.id.to_s
+      expect(JSON.parse(response.body)[0]['id']).to eq post.id
     end
 
     context 'response have headers' do

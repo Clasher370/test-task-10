@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
   scope '/api/v1' do
-    post '/create', to: 'users#create'
-
-    post '/posts', to: 'posts#create'
-    get '/posts/:id', to: 'posts#show'
     get '/posts', to: 'posts#index'
+    get '/posts/:id', to: 'posts#show'
+    post '/posts', to: 'posts#create'
+
+    post '/create', to: 'users#create'
   end
 end

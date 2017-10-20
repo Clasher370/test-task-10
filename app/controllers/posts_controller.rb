@@ -1,4 +1,9 @@
 class PostsController < ApplicationController
+  def index
+    post = Post.all.order('published_at DESC')
+    render json: post, status: :ok
+  end
+
   def create
     post = Post.new(post_params)
     if post.save
