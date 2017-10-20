@@ -14,9 +14,9 @@ describe 'Users' do
       expect(user.errors.messages).to be_empty
     end
 
-    it 'create user_with_five_posts' do
-      user = create(:user_with_five_posts)
-      expect(user.posts.length).to eq 5
+    it 'create user_with_twenty_posts' do
+      user = create(:user_with_twenty_posts)
+      expect(user.posts.length).to eq 20
     end
   end
 

@@ -5,9 +5,9 @@ FactoryGirl.define do
     password 'secret'
     password_confirmation 'secret'
 
-    factory :user_with_five_posts do
+    factory :user_with_twenty_posts do
       after(:create) do |user|
-        5.times { create(:post, author: user) }
+        20.times { create(:post, author: user) }
       end
     end
   end
