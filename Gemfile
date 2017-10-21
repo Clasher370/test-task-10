@@ -28,6 +28,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'faker'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'will_paginate', '~> 3.1.0'
+gem 'knock'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
