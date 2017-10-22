@@ -16,9 +16,11 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-config/*.yml
+config/database.yml
+config/cable.yml
 .idea
 .ruby-version
 .ruby-gemset
+.env
 
 .byebug_history
