@@ -5,7 +5,7 @@ describe 'Authenticate' do
   let!(:token) { Knock::AuthToken.new(payload: { sub: user.id }).token }
 
   context 'auth token' do
-    before { post '/user_token', params: {"auth": {"email": user.email, "password": "secret"}} }
+    before { post '/api/v1/user_token', params: {"auth": {"email": user.email, "password": "secret"}} }
 
     it { expect(response).to have_http_status 201 }
 

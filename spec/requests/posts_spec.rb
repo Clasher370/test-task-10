@@ -1,9 +1,12 @@
 require 'rails_helper'
 
 describe 'Posts' do
-  let(:valid_attr) do
+  let(:authenticated_header) do
     user = create(:user)
-    attributes_for(:post, author_id: user.id)
+    token = Knock::AuthToken.new(payload: { sub: user.id }).token
+    {
+      'Authorization': "Bearer #{token}"
+    }
   end
 
   context 'factory is valid' do
@@ -19,8 +22,10 @@ describe 'Posts' do
   end
 
   describe 'POST #create' do
+    let(:valid_attr) { attributes_for(:post) }
+
     context 'with valid attributes' do
-      before { post '/api/v1/posts', params: valid_attr }
+      before { post '/api/v1/posts', params: valid_attr, headers: authenticated_header }
 
       it 'returns http created' do
         expect(response).to have_http_status(:created)
@@ -34,7 +39,7 @@ describe 'Posts' do
     end
 
     context 'with invalid attributes' do
-      before { post '/api/v1/posts', params: {} }
+      before { post '/api/v1/posts', params: {}, headers: authenticated_header }
 
       it 'returns http unprocessable_entity' do
         expect(response).to have_http_status(:unprocessable_entity)
@@ -50,13 +55,13 @@ describe 'Posts' do
     let(:post) { create(:post) }
 
     it 'is return post by id' do
-      get "/api/v1/posts/#{post.id}"
+      get "/api/v1/posts/#{post.id}", headers: authenticated_header
       expect(JSON.parse(response.body)['id']).to eq post.id
     end
 
     it 'is return error if wrong id' do
       wrong_id = post.id - 1
-      get "/api/v1/posts/#{wrong_id}"
+      get "/api/v1/posts/#{wrong_id}", headers: authenticated_header
       expect(JSON.parse(response.body)).to eq "error" => "Couldn't find Post with 'id'=#{wrong_id}"
     end
   end
@@ -66,7 +71,7 @@ describe 'Posts' do
     let!(:post) { create(:post, author: user, published_at: Time.now + 1.hour) }
 
     context 'with correct params' do
-      before { get '/api/v1/posts', params: { page: 1, per_page: 2 } }
+      before { get '/api/v1/posts', params: { page: 1, per_page: 2 }, headers: authenticated_header }
 
       it { expect(response).to have_http_status 200 }
 
@@ -79,7 +84,7 @@ describe 'Posts' do
       end
 
       it 'is last page have 1 post' do
-        get '/api/v1/posts', params: { page: 11, per_page: 2 }
+        get '/api/v1/posts', params: { page: 11, per_page: 2 }, headers: authenticated_header
         expect(JSON.parse(response.body).count).to eq 1
       end
 
@@ -95,7 +100,7 @@ describe 'Posts' do
     end
 
     context 'without params' do
-      before { get '/api/v1/posts' }
+      before { get '/api/v1/posts', headers: authenticated_header }
 
       it { expect(JSON.parse(response.body).count).to eq 21 }
 
@@ -106,14 +111,14 @@ describe 'Posts' do
 
     context 'with only' do
       context 'invalid page param' do
-        before { get '/api/v1/posts', params: { page: 2 }}
+        before { get '/api/v1/posts', params: { page: 2 }, headers: authenticated_header }
 
         it { expect(JSON.parse(response.body)).to be_empty }
         it { expect(response['pages-count']).to eq 'none' }
       end
 
       context 'per_page param' do
-        before { get '/api/v1/posts', params: { per_page: 5 }}
+        before { get '/api/v1/posts', params: { per_page: 5 }, headers: authenticated_header}
 
         it { expect(JSON.parse(response.body).count).to eq 5 }
         it { expect(response['pages-count']).to eq '5' }
