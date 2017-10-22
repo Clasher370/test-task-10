@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     get '/posts/:id', to: 'posts#show'
     post '/posts', to: 'posts#create'
 
-    post '/create', to: 'users#create'
+    post '/user_create', to: 'users#create'
 
     post '/user_token' => 'user_token#create'
   end

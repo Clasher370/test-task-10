@@ -22,7 +22,7 @@ describe 'Users' do
 
   describe 'POST #create' do
     context 'with valid attributes' do
-      before { post '/api/v1/create', params: valid_attr }
+      before { post '/api/v1/user_create', params: valid_attr }
 
       it 'returns http created' do
         expect(response).to have_http_status(:created)
@@ -34,7 +34,7 @@ describe 'Users' do
     end
 
     context 'with invalid attributes' do
-      before { post '/api/v1/create', params: {} }
+      before { post '/api/v1/user_create', params: {} }
 
       it 'returns http unprocessable_entity' do
         expect(response).to have_http_status(:unprocessable_entity)
