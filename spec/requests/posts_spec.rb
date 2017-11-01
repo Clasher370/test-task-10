@@ -1,14 +1,6 @@
 require 'rails_helper'
 
 describe 'Posts' do
-  let(:authenticated_header) do
-    user = create(:user)
-    token = Knock::AuthToken.new(payload: { sub: user.id }).token
-    {
-      'Authorization': "Bearer #{token}"
-    }
-  end
-
   context 'factory is valid' do
     it 'build' do
       post = build(:post)
