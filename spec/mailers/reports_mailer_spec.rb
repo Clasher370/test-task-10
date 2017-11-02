@@ -9,6 +9,10 @@ describe ReportsMailer do
 
   let(:mail) { described_class.report_email(collection, test_mail) }
 
+  it 'send message' do
+    expect { mail.deliver_now }.to change { ActionMailer::Base.deliveries.count }
+  end
+
   context 'is have correct' do
     it 'subject' do
       expect(mail.subject).to eq 'Report'
