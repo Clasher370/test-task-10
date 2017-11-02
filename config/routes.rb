@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'reports/by_author'
+
   scope '/api/v1' do
     get '/posts', to: 'posts#index'
     get '/posts/:id', to: 'posts#show'
@@ -7,5 +9,7 @@ Rails.application.routes.draw do
     post '/user_create', to: 'users#create'
 
     post '/user_token' => 'user_token#create'
+
+    post '/reports/by_author', to: 'reports#by_author'
   end
 end
