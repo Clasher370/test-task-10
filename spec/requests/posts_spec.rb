@@ -1,18 +1,6 @@
 require 'rails_helper'
 
 describe 'Posts' do
-  context 'factory is valid' do
-    it 'build' do
-      post = build(:post)
-      expect(post).to be_valid
-    end
-
-    it 'create' do
-      post = create(:post)
-      expect(post.errors.messages).to be_empty
-    end
-  end
-
   describe 'POST #create' do
     let(:valid_attr) { attributes_for(:post) }
 
