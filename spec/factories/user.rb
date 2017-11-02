@@ -3,7 +3,6 @@ FactoryGirl.define do
     nickname { Faker::Internet.user_name }
     email  { Faker::Internet.email("#{nickname}") }
     password 'secret'
-    password_confirmation 'secret'
 
     factory :user_with_twenty_posts do
       after(:create) do |user|

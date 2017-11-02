@@ -6,7 +6,7 @@ describe User do
     it { should have_many(model).with_foreign_key('author_id') }
   end
 
-  %i[nickname email password_digest].each do |attr|
+  %i[nickname email password].each do |attr|
     it { should validate_presence_of(attr) }
   end
 

@@ -4,7 +4,7 @@ class User < ApplicationRecord
   has_many :posts, foreign_key: :author_id, dependent: :destroy
   has_many :comments, foreign_key: :author_id, dependent: :destroy
 
-  validates_presence_of :nickname, :email, :password_digest
+  validates_presence_of :nickname, :email, :password
 
   def self.posts_and_comments_count(start_date, end_date)
     find_by_sql ["SELECT u.id,
