@@ -5,7 +5,7 @@
               password_confirmation: 'secret')
 end
 
-users = User.all
+users = User.limit(9)
 
 users.each do |user|
   [*30..50].sample.times do
@@ -20,6 +20,7 @@ posts_ids = Post.ids
 users.each do |user|
   [*50..100].sample.times do
     user.comments.create!(body: Faker::Lorem.sentence(3),
-                         post_id: posts_ids.sample)
+                          post_id: posts_ids.sample,
+                          published_at: Faker::Time.between(3.month.ago, DateTime.now))
   end
 end
