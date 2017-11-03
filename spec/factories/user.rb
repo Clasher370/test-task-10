@@ -3,11 +3,11 @@ FactoryGirl.define do
     nickname { Faker::Internet.user_name }
     email  { Faker::Internet.email("#{nickname}") }
     password 'secret'
-    password_confirmation 'secret'
 
-    factory :user_with_twenty_posts do
+    factory :user_with_20_posts_10_comments do
       after(:create) do |user|
-        20.times { create(:post, author: user) }
+        create_list(:post, 20, author: user)
+        create_list(:comment, 10, author: user, post: user.posts.first)
       end
     end
   end

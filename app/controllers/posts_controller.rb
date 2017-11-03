@@ -2,7 +2,7 @@ class PostsController < ApplicationController
   after_action :set_headers, only: :index
 
   def index
-    post = Post.all.order('published_at DESC').paginate(page: params[:page], per_page: params[:per_page])
+    post = Post.includes(:author).order('published_at DESC').paginate(page: params[:page], per_page: params[:per_page])
     render json: post, status: :ok
   end
 
@@ -16,7 +16,7 @@ class PostsController < ApplicationController
   end
 
   def show
-    post = Post.find(params[:id])
+    post = Post.includes(:author).find(params[:id])
     render json: post, status: :ok
   rescue => e
     render json: { error: e.message }, status: :not_found

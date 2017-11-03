@@ -1,26 +1,6 @@
 require 'rails_helper'
 
 describe 'Posts' do
-  let(:authenticated_header) do
-    user = create(:user)
-    token = Knock::AuthToken.new(payload: { sub: user.id }).token
-    {
-      'Authorization': "Bearer #{token}"
-    }
-  end
-
-  context 'factory is valid' do
-    it 'build' do
-      post = build(:post)
-      expect(post).to be_valid
-    end
-
-    it 'create' do
-      post = create(:post)
-      expect(post.errors.messages).to be_empty
-    end
-  end
-
   describe 'POST #create' do
     let(:valid_attr) { attributes_for(:post) }
 
@@ -67,7 +47,7 @@ describe 'Posts' do
   end
 
   describe 'GET #index' do
-    let!(:user) { create(:user_with_twenty_posts) }
+    let!(:user) { create(:user_with_20_posts_10_comments) }
     let!(:post) { create(:post, author: user, published_at: Time.now + 1.hour) }
 
     context 'with correct params' do
