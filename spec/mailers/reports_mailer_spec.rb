@@ -1,8 +1,9 @@
 require 'rails_helper'
 
 describe ReportsMailer do
-  let!(:user) { create(:user_with_twenty_posts) }
+  let!(:user) { create(:user_with_20_posts_10_comments) }
 
+  # Return 0 posts and comments count!
   let(:collection) do
     User.posts_and_comments_count(start_date, end_date)
   end
@@ -38,15 +39,19 @@ describe ReportsMailer do
 
     context 'td with user' do
       it "nickname" do
-        expect(mail.body.encoded).to match user.nickname
+        expect(mail.body.encoded).to match "<td>#{user.nickname}</td>"
       end
 
       it "email" do
-        expect(mail.body.encoded).to match user.email
+        expect(mail.body.encoded).to match "<td>#{user.email}</td>"
       end
 
-      it "count" do
-        expect(mail.body.encoded).to match collection[0].posts_count.to_s
+      it "posts count" do
+        expect(mail.body.encoded).to match "<td>#{collection[0].posts_count.to_s}</td>"
+      end
+
+      it "comments count" do
+        expect(mail.body.encoded).to match "<td>#{collection[0].comments_count.to_s}</td>"
       end
     end
   end

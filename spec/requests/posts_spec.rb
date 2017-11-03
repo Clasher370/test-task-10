@@ -47,7 +47,7 @@ describe 'Posts' do
   end
 
   describe 'GET #index' do
-    let!(:user) { create(:user_with_twenty_posts) }
+    let!(:user) { create(:user_with_20_posts_10_comments) }
     let!(:post) { create(:post, author: user, published_at: Time.now + 1.hour) }
 
     context 'with correct params' do
